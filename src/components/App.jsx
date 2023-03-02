@@ -3,7 +3,9 @@ import { ToastContainer } from 'react-toastify';
 import { SearchBar } from '../components/Searchbar/Searchbar';
 import { Component } from 'react';
 import { ImageGallery } from '../components/ImageGallery/ImageGallery';
-
+// import { ImageItem } from '../components/ImageGalleryItem/ImageGalleryItem';
+import { Modal } from '../components/Modal/Modal';
+import { Conatiner } from './App.styled';
 // import Image from './ImageGalleryItem';
 export class App extends Component {
   state = {
@@ -11,9 +13,9 @@ export class App extends Component {
     isLoading: false,
     page: 1,
     images: [],
-  };
-  handleFormSubmit = query => {
-    this.setState({ query });
+    largeImageURL: '',
+    modalImage: '',
+    showModal: false,
   };
   componentDidUpdate = (_, prevState) => {
     if (this.state.query !== prevState.query) {
@@ -35,23 +37,29 @@ export class App extends Component {
         });
     }
   };
+  handleFormSubmit = query => {
+    this.setState({ query });
+  };
+  toggleModal = modalImage => {
+    if (!modalImage) {
+      this.setState({ largeImageURL: '', showModal: false });
+      return;
+    }
+    this.setState({ modalImage, showModal: true });
+  };
   render() {
     return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 40,
-          color: '#010101',
-        }}
-      >
+      <Conatiner>
         <ToastContainer autoClose={2500} />
         <SearchBar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={this.state.images} />
-        React homework template
-      </div>
+        <ImageGallery images={this.state.images} openModal={this.toggleModal} />
+        {this.state.showModal && (
+          <Modal
+            closeModal={this.toggleModal}
+            modalImage={this.state.modalImage}
+          />
+        )}
+      </Conatiner>
     );
   }
 }

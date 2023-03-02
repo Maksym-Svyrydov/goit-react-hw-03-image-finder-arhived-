@@ -1,12 +1,17 @@
 import { ImageItem } from '../ImageGalleryItem/ImageGalleryItem';
-
-export const ImageGallery = ({ images }) => {
+import { List } from '../ImageGallery/ImageGallery.styled';
+export const ImageGallery = ({ images, openModal }) => {
   return (
-    <ul>
+    <List>
       {images.map(image => (
-        <ImageItem key={image.id} webformatURL={image.webformatURL} />
+        <ImageItem
+          key={image.id}
+          webformatURL={image.webformatURL}
+          largeImageURL={image.largeImageURL}
+          openModal={openModal}
+        />
       ))}
-    </ul>
+    </List>
   );
 };
 
